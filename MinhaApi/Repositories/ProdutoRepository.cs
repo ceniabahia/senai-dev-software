@@ -1,9 +1,36 @@
 using MinhaApi.Models;
 using MinhaApi.Repositories;
+using MySqlConnector;
 
 public class ProdutoRepository
     : IProdutoRepository
+    
 {
+  private readonly string _connectionString;
+public ProdutoRepository(IConfiguration config) 
+      => _connectionString = config.GetConnectionString("DefaultConnection")!;
+ public IEnumerable<Produto> GetAll() {
+      var lista = new List<Produto>();
+      using var conn = new MySqlConnection(_connectionString);
+      conn.Open();
+
+      string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos";
+      using var cmd = new MySqlCommand(sql, conn);
+      using var reader = cmd.ExecuteReader();
+
+      while (reader.Read()) {
+          lista.Add(new Produto {
+              Id = reader.GetInt32("id"),
+              Nome = reader.GetString("nome"),
+              Preco = reader.GetDecimal("preco"),
+              Estoque = reader.GetInt32("estoque"),
+              Ativo = reader.GetBoolean("ativo")
+          });
+      }
+      return lista;
+  }
+
+
   private static List<Produto> _db = new()
   {
     new Produto { Id=1, Nome="Notebook",
@@ -11,9 +38,6 @@ public class ProdutoRepository
     new Produto { Id=2, Nome="Mouse",
                    Preco=89.90m, Estoque=50 }
   };
-
-  public IEnumerable<Produto> GetAll()
-      => _db;
 
   public Produto? GetById(int id)
       => _db.FirstOrDefault(p => p.Id == id);
@@ -33,23 +57,5 @@ public class ProdutoRepository
   public void Delete(int id)
       => _db.RemoveAll(p => p.Id == id);
 
-    IEnumerable<Produto> IProdutoRepository.GetAll()
-    {
-        throw new NotImplementedException();
-    }
 
-    Produto? IProdutoRepository.GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Add(Produto produto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Produto produto)
-    {
-        throw new NotImplementedException();
-    }
 }

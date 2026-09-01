@@ -31,26 +31,6 @@ public class ProdutoService : IProdutoService
       return p;
   }
 
-    IEnumerable<Produto> IProdutoService.GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    Produto? IProdutoService.GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Produto Create(Produto produto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Produto? Update(int id, Produto produto)
-    {
-        throw new NotImplementedException();
-    }
-
     public bool Delete(int id)
     {
         throw new NotImplementedException();

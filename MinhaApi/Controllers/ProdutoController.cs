@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using MinhaApi.Models;
 using MinhaApi.Services;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -30,9 +30,8 @@ public class ProdutoController
             return NotFound();
         return Ok(produto);
     }
-
 // POST /api/produto
-/*[HttpPost]
+[HttpPost]
 public IActionResult Create(
     [FromBody] Produto produto)
 {
@@ -46,11 +45,9 @@ public IActionResult Create(
         new { id = criado.Id },
         criado);
 }
-{
-  "nome": "Notebook",
-  "preco": 2500.00,
-  "estoque": 10
-}
+
+
+
 // PUT /api/produto/1
 [HttpPut("{id}")]
 public IActionResult Update(
@@ -77,5 +74,4 @@ public IActionResult Delete(int id)
 
     return NoContent();
 }
-*/
 }

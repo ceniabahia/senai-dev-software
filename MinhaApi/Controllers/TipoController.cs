@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 using MinhaApi.Models;
 using MinhaApi.Services;
 
@@ -7,10 +7,10 @@ using MinhaApi.Services;
 public class TipoController
     : ControllerBase
 {
-    private readonly ITipoService _service;
+    private readonly TipoController _service;
 
     public TipoController(
-        ITipoService service)
+        TipoController service)
         => _service = service;
 
     // GET /api/tipo
@@ -30,4 +30,4 @@ public class TipoController
             return NotFound();
         return Ok(tipo);
     }
-}
+}*/

@@ -68,8 +68,6 @@ public void Delete(int id) {
     cmd.ExecuteNonQuery();
 }
 
-
-
 public void Add(Produto p) {
     using var conn = new MySqlConnection(_connectionString);
     conn.Open();

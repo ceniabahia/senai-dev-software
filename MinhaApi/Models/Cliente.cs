@@ -1,18 +1,17 @@
 namespace MinhaApi.Models;
 
-public class Produto
+public class Cliente
 {
-    internal object? email;
-
-
     public int Id { get; set; }
 
     public string Nome { get; set; }
         = string.Empty;
 
-    public decimal Preco { get; set; }
+    public string email { get; set; }
+    = string.Empty;
 
-    public int Estoque { get; set; }
+    public string cpf { get; set; }
+    = string.Empty;
 
     public bool Ativo { get; set; }
         = true;

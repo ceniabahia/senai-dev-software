@@ -1,0 +1,51 @@
+• Configura o pino especificado para funcionar como uma entrada ou saída.
+
+• Sintaxe:
+pinMode(pino, modo)
+
+• Parâmentros:
+⚬ pino: o número do pino do Arduino no qual se quer configurar o modo;
+⚬ modo: o modo do pino. Este pode ser INPUT, OUTPUT ou INPUT_PULLUP;
+
+Função pinMode()
+
+
+Função loop()
+
+A função loop() faz precisamente o que o seu nome sugere, e repete-se consecutivamente
+enquanto a placa estiver ligada, permitindo o seu programa mudar e responder a essas
+mudanças.
+
+
+
+Bool / Boolean
+
+Armazenar dois valores: true or false.
+
+Sintaxe:
+bool var = val;
+
+• Parâmentros:
+⚬ var: nome da variável
+⚬ val: valor a ser atribuído à variável
+
+
+
+Byte
+
+Armazena valores numéricos de 0 a 255.
+
+Sintaxe:
+byte var = val;
+
+• Parâmentros:
+⚬ var: nome da variável
+⚬ val: valor a ser atribuído à variável
+
+Microcontroladores x Microprocessadores
+
+• Os microcontroladores são hardwares de controle direto, pois já possuem estrutura que
+permite controle;
+
+• Os microprocessador só processa a informação que lhe é passada por meio dos seus
+periféricos.;

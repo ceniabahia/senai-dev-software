@@ -4,19 +4,25 @@ using MinhaApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
-// ✅ Registra o Repository
+// Registra o Repository
 builder.Services.AddScoped<
     IProdutoRepository,
     ProdutoRepository>();
 
 builder.Services.AddScoped<
-IClienteRepository,
-ClienteRepository>();
+    IClienteRepository,
+    ClienteRepository>();
 
-// ✅ Registra a Service
+builder.Services.AddScoped<
+    IVendasRepository,
+    VendasRepository>();
+
+// Registra a Service
 builder.Services.AddScoped<
     IProdutoService,
     ProdutoService>();
@@ -24,6 +30,10 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IClienteService,
     ClienteService>();
+
+builder.Services.AddScoped<
+    IVendasService,
+    VendasService>();
 
 var app = builder.Build();
 
@@ -34,4 +44,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
 app.Run();

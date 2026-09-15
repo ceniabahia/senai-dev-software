@@ -4,94 +4,52 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-
 public class VendasController : ControllerBase
 {
     private readonly IVendasService _service;
-    
 
-    public VendasController(
-        IVendasService service)
+    public VendasController(IVendasService service)
         => _service = service;
 
+    // GET /api/vendas
     [HttpGet]
     public IActionResult GetAll()
     {
         var vendas = _service.GetAll();
         return Ok(vendas);
-
     }
 
+    // GET /api/vendas/1
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
         var venda = _service.GetById(id);
 
-
-
         if (venda == null)
-        return NotFound();
+            return NotFound();
 
         return Ok(venda);
     }
-[HttpPost]
-public IActionResult Create(
-    [FromBody] Vendas venda)
 
+    // POST /api/vendas
+    [HttpPost]
+    public IActionResult Create([FromBody] Vendas vendas)
     {
         if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+            return BadRequest(ModelState);
 
-        var criado = _service.Create(venda);
+        try
+        {
+            var criado = _service.Create(vendas);
 
-        return CreatedAtAction( 
-nameof(GetById),
-new { id = criado.Id },
-criado);
-
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = criado.Id },
+                criado);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
-[HttpPut("{id}")]
-public IActionResult Update(
-    int id,
-    [FromBody] Vendas venda)
-    {
-        var atualizado =
-        _service.Update(id, venda);
-
-if (atualizado == null)
-return NotFound();
-return Ok(atualizado);
-
-    }
-
-[HttpDelete("{id}")]
-public IActionResult Delete(int id)
-    {
-        var deletado = _service.Delete(id);
-
-        if (!deletado)
-        return NotFound();
-
-        return NoContent();
-
-
-
-    }
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

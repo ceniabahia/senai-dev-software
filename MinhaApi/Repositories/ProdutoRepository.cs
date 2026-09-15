@@ -38,8 +38,9 @@ public ProdutoRepository(IConfiguration config)
     new Produto { Id=2, Nome="Mouse",
                    Preco=89.90m, Estoque=50 }
   };
+    private string? __connectionString;
 
-  public Produto? GetById(int id)
+    public Produto? GetById(int id)
       => _db.FirstOrDefault(p => p.Id == id);
 
 
@@ -87,5 +88,27 @@ public void Add(Produto p) {
     p.Id = Convert.ToInt32(idGerado);
 
       
+
 }
+
+public void AtualizarEstoque(int id, int estoque)
+
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        conn.Open();
+
+        string sql = "UPDATE produtos SET estoque = @Estoque WHERE id = @id";
+
+        using var cmd = new MySqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@Id", id);
+        cmd.Parameters.AddWithValue("@Estoque", estoque);
+
+        
+        cmd.ExecuteNonQuery();
+
+
+
+
+    }
+
 }

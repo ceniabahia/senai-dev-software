@@ -24,9 +24,11 @@ public class VendasService : IVendasService
     public Vendas? GetById(int id)
         => _repo.GetById(id);
 
-    public Vendas Create(Vendas vendas)
+   public VendasResponse Create(VendasRequest request)
+{
+    
     {
-        var cliente = _clienteRepo.GetById(vendas.ClienteId);
+        var cliente = _clienteRepo.GetById(request.ClienteId);
 
         if (cliente == null)
             throw new ArgumentException("Cliente não encontrado.");
@@ -34,7 +36,7 @@ public class VendasService : IVendasService
         if (!cliente.Ativo)
             throw new ArgumentException("Cliente está inativo.");
 
-        var produto = _produtoRepo.GetById(vendas.ProdutoId);
+        var produto = _produtoRepo.GetById(request.ProdutoId);
 
         if (produto == null)
             throw new ArgumentException("Produto não encontrado.");
@@ -42,25 +44,47 @@ public class VendasService : IVendasService
         if (!produto.Ativo)
             throw new ArgumentException("Produto está inativo.");
 
-        if (produto.Estoque < vendas.Quantidade)
+        if (request.Quantidade <= 0)
+            throw new ArgumentException("Quantidade inválida.");
+
+        if (produto.Estoque < request.Quantidade)
             throw new ArgumentException("Estoque insuficiente.");
 
-        vendas.ValorTotal = produto.Preco * vendas.Quantidade;
-        vendas.DataVenda = DateTime.Now;
+        var venda = new Vendas
+        {
+            ClienteId = request.ClienteId,
+            ProdutoId = request.ProdutoId,
+            Quantidade = request.Quantidade,
+            ValorTotal = produto.Preco * request.Quantidade,
+            DataVenda = DateTime.Now
+        };
 
-       produto.Estoque -= vendas.Quantidade;
-       _produtoRepo.AtualizarEstoque(produto.Id, produto.Estoque);
-        _repo.Add(vendas);
+        produto.Estoque -= request.Quantidade;
 
-        return vendas;
+        _produtoRepo.AtualizarEstoque(
+            produto.Id,
+            produto.Estoque);
+
+        _repo.Add(venda);
+
+        return new VendasResponse
+        {
+            Id = venda.Id,
+            ClienteId = venda.ClienteId,
+            ProdutoId = venda.ProdutoId,
+            Quantidade = venda.Quantidade,
+            ValorTotal = venda.ValorTotal,
+            DataVenda = venda.DataVenda
+        };
     }
+}
 
-    public object Update(int id, Vendas venda)
+    IEnumerable<VendasResponse> IVendasService.GetAll()
     {
         throw new NotImplementedException();
     }
 
-    public bool Delete(int id)
+    VendasResponse? IVendasService.GetById(int id)
     {
         throw new NotImplementedException();
     }

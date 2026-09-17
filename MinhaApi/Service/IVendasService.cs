@@ -4,9 +4,9 @@ namespace MinhaApi.Services;
 
 public interface IVendasService
 {
-    IEnumerable<Vendas> GetAll();
+    IEnumerable<VendasResponse> GetAll();
 
-    Vendas? GetById(int id);
+    VendasResponse? GetById(int id);
 
-    Vendas Create(Vendas vendas);
+    VendasResponse Create(VendasRequest request);
 }

@@ -11,7 +11,6 @@ public class VendasController : ControllerBase
     public VendasController(IVendasService service)
         => _service = service;
 
-    // GET /api/vendas
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -19,7 +18,6 @@ public class VendasController : ControllerBase
         return Ok(vendas);
     }
 
-    // GET /api/vendas/1
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
@@ -31,25 +29,14 @@ public class VendasController : ControllerBase
         return Ok(venda);
     }
 
-    // POST /api/vendas
-    [HttpPost]
-    public IActionResult Create([FromBody] Vendas vendas)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+[HttpPost]
+public IActionResult Create([FromBody] VendasRequest request)
+{
+    var venda = _service.Create(request);
 
-        try
-        {
-            var criado = _service.Create(vendas);
-
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = criado.Id },
-                criado);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
+    return CreatedAtAction(
+        nameof(GetById),
+        new { id = venda.Id },
+        venda);
+}
 }

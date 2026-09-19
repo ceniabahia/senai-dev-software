@@ -18,15 +18,57 @@ public class VendasService : IVendasService
         _produtoRepo = produtoRepo;
     }
 
-    public IEnumerable<Vendas> GetAll()
-        => _repo.GetAll();
+    public IEnumerable<VendasResponse> GetAll()
+    {
+        var vendas = _repo.GetAll();
 
-    public Vendas? GetById(int id)
-        => _repo.GetById(id);
+        var lista = new List<VendasResponse>();
 
-   public VendasResponse Create(VendasRequest request)
-{
-    
+        foreach (var venda in vendas)
+        {
+            var cliente = _clienteRepo.GetById(venda.ClienteId);
+            var produto = _produtoRepo.GetById(venda.ProdutoId);
+
+            lista.Add(new VendasResponse
+            {
+                Id = venda.Id,
+                ClienteId = venda.ClienteId,
+                ClienteNome = cliente?.Nome ?? "",
+                ProdutoId = venda.ProdutoId,
+                ProdutoNome = produto?.Nome ?? "",
+                Quantidade = venda.Quantidade,
+                ValorTotal = venda.ValorTotal,
+                DataVenda = venda.DataVenda
+            });
+        }
+
+        return lista;
+    }
+
+    public VendasResponse? GetById(int id)
+    {
+        var venda = _repo.GetById(id);
+
+        if (venda == null)
+            return null;
+
+        var cliente = _clienteRepo.GetById(venda.ClienteId);
+        var produto = _produtoRepo.GetById(venda.ProdutoId);
+
+        return new VendasResponse
+        {
+            Id = venda.Id,
+            ClienteId = venda.ClienteId,
+            ClienteNome = cliente?.Nome ?? "",
+            ProdutoId = venda.ProdutoId,
+            ProdutoNome = produto?.Nome ?? "",
+            Quantidade = venda.Quantidade,
+            ValorTotal = venda.ValorTotal,
+            DataVenda = venda.DataVenda
+        };
+    }
+
+    public VendasResponse Create(VendasRequest request)
     {
         var cliente = _clienteRepo.GetById(request.ClienteId);
 
@@ -71,22 +113,11 @@ public class VendasService : IVendasService
         {
             Id = venda.Id,
             ClienteId = venda.ClienteId,
+            ClienteNome = cliente.Nome,
             ProdutoId = venda.ProdutoId,
+            ProdutoNome = produto.Nome,
             Quantidade = venda.Quantidade,
             ValorTotal = venda.ValorTotal,
             DataVenda = venda.DataVenda
         };
-    }
-}
-
-    IEnumerable<VendasResponse> IVendasService.GetAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    VendasResponse? IVendasService.GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-}
+    }}

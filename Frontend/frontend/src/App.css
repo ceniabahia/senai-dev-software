@@ -1,0 +1,239 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.titulo {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Painel lateral ===== */
+.painel {
+  background: var(--panel);
+  color: var(--panel-ink);
+  border-radius: 18px;
+  padding: 28px;
+  position: sticky;
+  top: 20px;
+}
+
+@media (max-width: 760px) {
+  .painel {
+    position: static;
+  }
+}
+
+.total-label {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin: 0;
+}
+
+.total {
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.contagem {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin: 0 0 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ===== Formulário ===== */
+.form-titulo {
+  font-size: 1.1rem;
+  margin: 0 0 14px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.campo input {
+  padding: 11px 13px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.campo input::placeholder {
+  color: rgba(232, 245, 242, 0.45);
+}
+
+.campo input:focus {
+  border-color: #5eead4;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.botao {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: #5eead4;
+  color: #06302b;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.botao:hover {
+  background: #99f6e4;
+}
+
+.botao:active {
+  transform: scale(0.98);
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botao:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.erro-form {
+  background: rgba(249, 112, 102, 0.18);
+  color: #ffb4ad;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  margin: 0 0 12px;
+}
+
+/* ===== Lista ===== */
+.topo-lista {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 1.25rem;
+  flex: 1;
+}
+
+.busca {
+  padding: 10px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  width: 200px;
+  max-width: 50%;
+}
+
+.busca:focus {
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent);
+}
+
+.erro {
+  background: #fee2e2;
+  color: #b42318;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--card);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.produto-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 20px;
+}
+
+.produto-item + .produto-item {
+  border-top: 1px solid var(--line);
+}
+
+.produto-inicial {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--acc) 16%, transparent);
+  color: var(--acc2);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  flex: none;
+}
+
+.produto-nome {
+  flex: 1;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.produto-preco {
+  font-weight: 800;
+  color: var(--price);
+  font-variant-numeric: tabular-nums;
+}
+
+.vazio {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--soft);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin: 0;
+}

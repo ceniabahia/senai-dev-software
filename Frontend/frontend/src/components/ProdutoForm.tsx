@@ -31,7 +31,7 @@ function ProdutoForm({ onProdutoCriado }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="form-card" onSubmit={handleSubmit}>
       <h2 className="form-titulo">Cadastrar produto</h2>
 
       {erro && <p className="erro-form">{erro}</p>}

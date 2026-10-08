@@ -17,7 +17,7 @@ function ProdutoList({ produtos, loading }: Props) {
     return <p className="vazio">Carregando...</p>
 
   if (produtos.length === 0)
-    return <p className="vazio">Nenhum produto encontrado. Cadastre o primeiro ao lado.</p>
+    return <p className="vazio">Nenhum produto cadastrado ainda.</p>
 
   return (
     <ul className="lista">

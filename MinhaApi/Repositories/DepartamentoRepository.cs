@@ -27,7 +27,7 @@ public class DepartamentoRepository : IDepartamentoRepository
             {
                 id = reader.GetInt32("id"),
                 Nome = reader.GetString("nome"),
-                 Funcionario = reader.GetString("funcionario"),
+                Funcionario = reader.GetString("funcionario"),
                 Email = reader.GetString("email"),
                 Telefone = reader.GetString("telefone"),
                 Ativo = reader.GetBoolean("ativo")
@@ -43,10 +43,11 @@ public class DepartamentoRepository : IDepartamentoRepository
         conn.Open();
 
         string sql = @"SELECT id, nome, funcionario, email, telefone, ativo
-                       FROM derpatamento
+                       FROM departamento
                        WHERE id = @id";
 
         using var cmd = new MySqlCommand(sql, conn);
+
         cmd.Parameters.AddWithValue("@id", id);
 
         using var reader = cmd.ExecuteReader();
@@ -99,7 +100,7 @@ public class DepartamentoRepository : IDepartamentoRepository
 
         string sql = @"UPDATE departamento
                        SET nome = @Nome,
-                        funcionario = @Funcionario,
+                           funcionario = @Funcionario,
                            email = @Email,
                            telefone = @Telefone,
                            ativo = @Ativo

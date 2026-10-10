@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Cliente } from '../types/Cliente'
-import { clienteService } from '../services/clienteService'
+import { ClienteService } from '../services/clienteService'
 import ClienteForm from '../components/ClienteForm'
 import ClienteList from '../components/ClienteList'
 import '../assets/css/Cliente.css'
@@ -15,7 +15,7 @@ function ClientesPage() {
     setErro(null)
 
     try {
-      setClientes(await clienteService.listar())
+      setClientes(await ClienteService.listar())
     } catch {
       setErro('Erro ao carregar clientes.')
     } finally {

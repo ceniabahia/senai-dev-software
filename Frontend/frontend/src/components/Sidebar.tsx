@@ -22,24 +22,19 @@ function Sidebar() {
     >
       <div>MinhaApp</div>
 
-      <NavLink
-        to="/produtos"
-        style={getLinkStyle}
-      >
+      <NavLink to="/produtos" style={getLinkStyle}>
         📦 Produtos
       </NavLink>
 
-      <NavLink
-        to="/clientes"
-        style={getLinkStyle}
-      >
+      <NavLink to="/clientes" style={getLinkStyle}>
         👤 Clientes
       </NavLink>
 
-      <NavLink
-        to="/departamentos"
-        style={getLinkStyle}
-      >
+      <NavLink to="/vendas" style={getLinkStyle}>
+        🛒 Vendas
+      </NavLink>
+
+      <NavLink to="/departamentos" style={getLinkStyle}>
         🏢 Departamentos
       </NavLink>
     </nav>

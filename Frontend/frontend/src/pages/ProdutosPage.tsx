@@ -13,18 +13,38 @@ function ProdutosPage() {
   const carregarProdutos = async () => {
     try {
       setLoading(true)
+      setErro(null)
       setProdutos(await produtoService.listar())
-    } catch { setErro('Erro ao carregar produtos.') }
-    finally { setLoading(false) }
+    } catch {
+      setErro('Erro ao carregar produtos.')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  useEffect(() => { carregarProdutos() }, [])
+  useEffect(() => {
+    carregarProdutos()
+  }, [])
 
-  return (<div>
-    <h1>Gestão de Produtos</h1>
-    <ProdutoForm onProdutoCriado={carregarProdutos} />
-    {erro && <p>{erro}</p>}
-    <ProdutoList produtos={produtos} loading={loading} />
-  </div>)
+  return (
+    <div>
+      <h1 className="pagina-titulo">Gestão de Produtos</h1>
+
+      <div className="produtos-grid">
+        <ProdutoForm onProdutoCriado={carregarProdutos} />
+
+        <section>
+          <div className="produtos-topo">
+            <h2>Produtos cadastrados</h2>
+          </div>
+
+          {erro && <p className="erro">{erro}</p>}
+
+          <ProdutoList produtos={produtos} loading={loading} />
+        </section>
+      </div>
+    </div>
+  )
 }
+
 export default ProdutosPage

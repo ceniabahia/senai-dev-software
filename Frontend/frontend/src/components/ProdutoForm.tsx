@@ -8,6 +8,7 @@ interface Props {
 function ProdutoForm({ onProdutoCriado }: Props) {
   const [nome, setNome] = useState('')
   const [preco, setPreco] = useState('')
+  const [estoque, setEstoque] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
 
@@ -18,10 +19,13 @@ function ProdutoForm({ onProdutoCriado }: Props) {
       setLoading(true)
       await produtoService.criar({
         nome,
-        preco: Number(preco)
+        preco: Number(preco),
+        estoque: Number(estoque),
+        ativo: true
       })
       setNome('')
       setPreco('')
+      setEstoque('')
       onProdutoCriado()
     } catch {
       setErro('Erro ao cadastrar. Tente novamente.')
@@ -48,18 +52,34 @@ function ProdutoForm({ onProdutoCriado }: Props) {
         />
       </div>
 
-      <div className="campo">
-        <label htmlFor="preco">Preço</label>
-        <input
-          id="preco"
-          type="number"
-          step="0.01"
-          min="0"
-          placeholder="0,00"
-          value={preco}
-          onChange={e => setPreco(e.target.value)}
-          required
-        />
+      <div className="campo-linha">
+        <div className="campo">
+          <label htmlFor="preco">Preço</label>
+          <input
+            id="preco"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="0,00"
+            value={preco}
+            onChange={e => setPreco(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="campo">
+          <label htmlFor="estoque">Estoque</label>
+          <input
+            id="estoque"
+            type="number"
+            step="1"
+            min="0"
+            placeholder="0"
+            value={estoque}
+            onChange={e => setEstoque(e.target.value)}
+            required
+          />
+        </div>
       </div>
 
       <button className="botao" type="submit" disabled={loading}>

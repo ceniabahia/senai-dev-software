@@ -71,6 +71,13 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent);
 }
 
+/* Preço e Estoque lado a lado */
+.campo-linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
 .botao {
   width: 100%;
   padding: 12px;
@@ -146,16 +153,40 @@
   flex: none;
 }
 
-.produto-nome {
+.produto-info {
   flex: 1;
-  font-weight: 600;
   min-width: 0;
+}
+
+.produto-nome {
+  display: block;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.produto-estoque {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.estoque-ok {
+  color: var(--soft);
+}
+
+.estoque-baixo {
+  color: #f5a65b;
+  font-weight: 600;
+}
+
+.estoque-zerado {
+  color: #f97066;
+  font-weight: 600;
+}
+
 .produto-preco {
+  flex: none;
   font-weight: 800;
   color: var(--price);
   font-variant-numeric: tabular-nums;

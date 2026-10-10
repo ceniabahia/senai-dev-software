@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { clienteService } from '../services/clienteService'
+import { ClienteService } from '../services/clienteService'
 import '../assets/css/Cliente.css'
 
 interface Props {
@@ -18,7 +18,7 @@ function ClienteForm({ onClienteCriado }: Props) {
     setErro(null)
     try {
       setLoading(true)
-      await clienteService.criar({ nome, email, cpf })
+      await ClienteService.criar({ nome, email, cpf })
       setNome('')
       setEmail('')
       setCpf('')

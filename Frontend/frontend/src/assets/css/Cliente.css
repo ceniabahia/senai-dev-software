@@ -199,3 +199,26 @@
   border-radius: 18px;
   margin: 0;
 }
+.cliente-excluir {
+  flex: none;
+  padding: 7px 14px;
+  border: 1.5px solid color-mix(in srgb, #f97066 50%, transparent);
+  border-radius: 10px;
+  background: transparent;
+  color: #f97066;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cliente-excluir:hover {
+  background: #f97066;
+  color: #fff;
+}
+
+.cliente-excluir:focus-visible {
+  outline: 3px solid #f97066;
+  outline-offset: 2px;
+}

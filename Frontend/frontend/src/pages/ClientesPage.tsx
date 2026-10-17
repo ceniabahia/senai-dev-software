@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Cliente } from '../types/Cliente'
-import { ClienteService } from '../services/clienteService'
+import { ClienteService } from '../services/ClienteService'
 import ClienteForm from '../components/ClienteForm'
 import ClienteList from '../components/ClienteList'
 import '../assets/css/Cliente.css'
@@ -23,6 +23,17 @@ function ClientesPage() {
     }
   }
 
+  const excluirCliente = async (id: number) => {
+    setErro(null)
+
+    try {
+      await ClienteService.excluir(id)
+      await carregarClientes()
+    } catch {
+      setErro('Não foi possível excluir o cliente. Ele pode ter vendas registradas.')
+    }
+  }
+
   useEffect(() => {
     carregarClientes()
   }, [])
@@ -37,7 +48,11 @@ function ClientesPage() {
 
       {erro && <p className="cliente-erro">{erro}</p>}
 
-      <ClienteList clientes={clientes} loading={loading} />
+      <ClienteList
+        clientes={clientes}
+        loading={loading}
+        onExcluir={excluirCliente}
+      />
     </div>
   )
 }

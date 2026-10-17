@@ -201,3 +201,114 @@
   border-radius: 18px;
   margin: 0;
 }
+.produto-excluir {
+  flex: none;
+  padding: 7px 14px;
+  border: 1.5px solid color-mix(in srgb, #f97066 50%, transparent);
+  border-radius: 10px;
+  background: transparent;
+  color: #f97066;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.produto-excluir:hover {
+  background: #f97066;
+  color: #fff;
+}
+
+.produto-excluir:focus-visible {
+  outline: 3px solid #f97066;
+  outline-offset: 2px;
+}
+
+/* Corrige o campo Estoque vazando do card */
+.campo-linha .campo {
+  min-width: 0;
+}
+
+.campo input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ===== Ações da lista ===== */
+.produto-acoes {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.produto-editar {
+  flex: none;
+  padding: 7px 14px;
+  border: 1.5px solid color-mix(in srgb, var(--acc) 55%, transparent);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--acc);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.produto-editar:hover {
+  background: var(--acc);
+  color: #fff;
+}
+
+.produto-editar:focus-visible {
+  outline: 3px solid var(--acc);
+  outline-offset: 2px;
+}
+
+/* Linha que está sendo editada */
+.produto-item-editando {
+  background: color-mix(in srgb, var(--acc) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--acc);
+}
+
+/* ===== Botões do formulário ===== */
+.form-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.form-acoes .botao {
+  flex: 1;
+}
+
+.botao-secundario {
+  padding: 12px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.botao-secundario:hover {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.botao-secundario:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .produto-item {
+    flex-wrap: wrap;
+  }
+  .produto-acoes {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

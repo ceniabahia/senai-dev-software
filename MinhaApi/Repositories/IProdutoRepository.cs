@@ -1,14 +1,20 @@
+
 using MinhaApi.Models;
 
-namespace MinhaApi.Repositories;
-
-public interface IProdutoRepository
+namespace MinhaApi.Repositories
 {
-    IEnumerable<Produto> GetAll();
-    Produto? GetById(int id);
-    void Add(Produto produto);
-    void Update(Produto produto);
-    void Delete(int id);
+    public interface IProdutoRepository
+    {
+        IEnumerable<Produto> GetAll();
 
-    void AtualizarEstoque(int id, int estoque);
+        Produto? GetById(int id);
+
+        void Add(Produto produto);
+
+        void Update(Produto produto);
+
+        void Delete(int id);
+
+        void AtualizarEstoque(int id, int estoque);
+    }
 }

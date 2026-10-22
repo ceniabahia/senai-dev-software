@@ -222,3 +222,18 @@
   outline: 3px solid #f97066;
   outline-offset: 2px;
 }
+
+
+.cliente-editar {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2563eb;
+  color: white;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.cliente-editar:hover {
+  background-color: #1d4ed8;
+}

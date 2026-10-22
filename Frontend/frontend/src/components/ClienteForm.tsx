@@ -1,38 +1,96 @@
-import { useState } from 'react'
-import { ClienteService } from '../services/clienteService'
+
+import { useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import type { Cliente, NovoCliente } from '../types/Cliente'
+import { ClienteService } from '../services/ClienteService'
 import '../assets/css/Cliente.css'
 
 interface Props {
-  onClienteCriado: () => void
+  onClienteCriado: () => void | Promise<void>
+  clienteEditando: Cliente | null
+  onClienteAtualizado: () => void | Promise<void>
+  onCancelarEdicao: () => void
 }
 
-function ClienteForm({ onClienteCriado }: Props) {
+function ClienteForm({
+  onClienteCriado,
+  clienteEditando,
+  onClienteAtualizado,
+  onCancelarEdicao
+}: Props) {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [cpf, setCpf] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setErro(null)
-    try {
-      setLoading(true)
-      await ClienteService.criar({ nome, email, cpf })
+  useEffect(() => {
+    if (clienteEditando) {
+      setNome(clienteEditando.nome)
+      setEmail(clienteEditando.email)
+      setCpf(clienteEditando.cpf)
+      setErro(null)
+    } else {
       setNome('')
       setEmail('')
       setCpf('')
-      onClienteCriado()
+    }
+  }, [clienteEditando])
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setErro(null)
+
+    try {
+      setLoading(true)
+
+      if (clienteEditando) {
+        const cliente: Cliente = {
+          ...clienteEditando,
+          nome,
+          email,
+          cpf
+        }
+
+        await ClienteService.atualizar(cliente)
+        await onClienteAtualizado()
+      } else {
+        const novoCliente: NovoCliente = {
+          nome,
+          email,
+          cpf
+        }
+
+        await ClienteService.criar(novoCliente)
+        setNome('')
+        setEmail('')
+        setCpf('')
+        await onClienteCriado()
+      }
     } catch {
-      setErro('Erro ao cadastrar. Tente novamente.')
+      setErro(
+        clienteEditando
+          ? 'Erro ao atualizar cliente. Tente novamente.'
+          : 'Erro ao cadastrar. Tente novamente.'
+      )
     } finally {
       setLoading(false)
     }
   }
 
+  const cancelarEdicao = () => {
+    setNome('')
+    setEmail('')
+    setCpf('')
+    setErro(null)
+    onCancelarEdicao()
+  }
+
   return (
     <form className="cliente-form" onSubmit={handleSubmit}>
-      <h2 className="cliente-form-titulo">Cadastrar cliente</h2>
+      <h2 className="cliente-form-titulo">
+        {clienteEditando ? 'Editar cliente' : 'Cadastrar cliente'}
+      </h2>
 
       {erro && <p className="cliente-erro">{erro}</p>}
 
@@ -74,9 +132,28 @@ function ClienteForm({ onClienteCriado }: Props) {
         </div>
       </div>
 
-      <button className="cliente-botao" type="submit" disabled={loading}>
-        {loading ? 'Salvando...' : 'Cadastrar'}
+      <button
+        className="cliente-botao"
+        type="submit"
+        disabled={loading}
+      >
+        {loading
+          ? 'Salvando...'
+          : clienteEditando
+            ? 'Salvar alterações'
+            : 'Cadastrar'}
       </button>
+
+      {clienteEditando && (
+        <button
+          className="cliente-cancelar"
+          type="button"
+          onClick={cancelarEdicao}
+          disabled={loading}
+        >
+          Cancelar
+        </button>
+      )}
     </form>
   )
 }

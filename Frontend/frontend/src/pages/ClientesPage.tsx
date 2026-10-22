@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import type { Cliente } from '../types/Cliente'
 import { ClienteService } from '../services/ClienteService'
@@ -9,6 +10,7 @@ function ClientesPage() {
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
+  const [clienteEditando, setClienteEditando] = useState<Cliente | null>(null)
 
   const carregarClientes = async () => {
     setLoading(true)
@@ -28,10 +30,29 @@ function ClientesPage() {
 
     try {
       await ClienteService.excluir(id)
+
+      if (clienteEditando?.id === id) {
+        setClienteEditando(null)
+      }
+
       await carregarClientes()
     } catch {
       setErro('Não foi possível excluir o cliente. Ele pode ter vendas registradas.')
     }
+  }
+
+  const editarCliente = (cliente: Cliente) => {
+    setClienteEditando(cliente)
+    setErro(null)
+  }
+
+  const cancelarEdicao = () => {
+    setClienteEditando(null)
+  }
+
+  const salvarEdicao = async () => {
+    setClienteEditando(null)
+    await carregarClientes()
   }
 
   useEffect(() => {
@@ -42,7 +63,12 @@ function ClientesPage() {
     <div>
       <h1 className="cliente-titulo">Gestão de Clientes</h1>
 
-      <ClienteForm onClienteCriado={carregarClientes} />
+      <ClienteForm
+        onClienteCriado={carregarClientes}
+        clienteEditando={clienteEditando}
+        onClienteAtualizado={salvarEdicao}
+        onCancelarEdicao={cancelarEdicao}
+      />
 
       <h2 className="cliente-subtitulo">Clientes cadastrados</h2>
 
@@ -52,6 +78,7 @@ function ClientesPage() {
         clientes={clientes}
         loading={loading}
         onExcluir={excluirCliente}
+        onEditar={editarCliente}
       />
     </div>
   )

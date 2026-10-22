@@ -1,5 +1,6 @@
 import api from './api'
 import type { Cliente, NovoCliente } from '../types/Cliente'
+import { data } from 'react-router-dom'
 
 export const ClienteService = {
   listar: async (): Promise<Cliente[]> => {
@@ -10,6 +11,13 @@ export const ClienteService = {
     const { data } = await api.post('/cliente', c)
     return data
   },
+
+atualizar: async (c: Cliente): Promise<Cliente> => {
+  const { data } = await api.put('/cliente/' + c.id, c)
+  return data
+},
+
+  
 
     excluir: async (id: number): Promise<void> => {
     await api.delete(`/cliente/${id}`)

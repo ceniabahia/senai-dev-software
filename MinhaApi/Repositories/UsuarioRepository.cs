@@ -5,7 +5,7 @@ public class UsuarioRepository : IUsuarioRepository
     private readonly string _cs;
 
     public UsuarioRepository(IConfiguration config)
-        => _cs = config.GetConnectionString("Default")!;
+        => _cs = config.GetConnectionString("DefaultConnection")!;
 
     public Usuario? BuscarPorEmail(string email)
     {

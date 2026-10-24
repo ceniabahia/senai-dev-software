@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import type { Cliente } from '../types/Cliente'
 import type { Produto } from '../types/Produto'
 
-import { produtoService } from '../services/produtoService'
+import { produtoService } from '../services/ProdutoService'
 import { vendasService } from '../services/VendasService'
 import '../assets/css/Venda.css'
-import { ClienteService } from '../services/clienteService'
+import { ClienteService } from '../services/ClienteService'
 
 interface Props {
   onVendaCriada: () => void

@@ -1,0 +1,57 @@
+.sidebar-usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 14px 18px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #c8d400;
+  color: #1a3d5c;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  flex: none;
+}
+
+.sidebar-usuario-nome {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-sair {
+  flex: none;
+  padding: 6px 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.sidebar-sair:hover {
+  background: #f97066;
+  border-color: #f97066;
+  color: #fff;
+}
+
+.sidebar-sair:focus-visible {
+  outline: 3px solid #c8d400;
+  outline-offset: 2px;
+}

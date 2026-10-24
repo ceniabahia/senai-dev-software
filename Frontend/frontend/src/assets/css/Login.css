@@ -1,0 +1,111 @@
+.login-pagina {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 32px 28px;
+}
+
+.login-titulo {
+  margin: 0 0 6px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.login-sub {
+  margin: 0 0 24px;
+  color: var(--soft);
+  font-size: 0.95rem;
+}
+
+.login-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.login-campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--soft);
+}
+
+.login-campo input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-campo input::placeholder {
+  color: var(--soft);
+  opacity: 0.7;
+}
+
+.login-campo input:focus {
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent);
+}
+
+/* Evita o fundo azul-claro do preenchimento automático do navegador */
+.login-campo input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  box-shadow: 0 0 0 1000px var(--card) inset;
+  caret-color: var(--ink);
+}
+
+.login-botao {
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--acc);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.login-botao:hover {
+  background: var(--acc2);
+}
+
+.login-botao:active {
+  transform: scale(0.98);
+}
+
+.login-botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-botao:focus-visible {
+  outline: 3px solid var(--acc);
+  outline-offset: 2px;
+}
+
+.login-erro {
+  background: color-mix(in srgb, #f97066 18%, transparent);
+  color: #f97066;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}

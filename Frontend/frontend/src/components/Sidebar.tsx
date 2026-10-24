@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import '../assets/css/Sidebar.css'
 
 const getLinkStyle = ({ isActive }: { isActive: boolean }) => ({
   display: 'block',
@@ -10,6 +12,8 @@ const getLinkStyle = ({ isActive }: { isActive: boolean }) => ({
 })
 
 function Sidebar() {
+  const { user, logout } = useAuth()
+
   return (
     <nav
       style={{
@@ -21,6 +25,16 @@ function Sidebar() {
       }}
     >
       <div>MinhaApp</div>
+
+      <div className="sidebar-usuario">
+        <span className="sidebar-avatar">
+          {user?.nome?.charAt(0).toUpperCase()}
+        </span>
+        <span className="sidebar-usuario-nome">{user?.nome}</span>
+        <button type="button" className="sidebar-sair" onClick={logout}>
+          Sair
+        </button>
+      </div>
 
       <NavLink to="/produtos" style={getLinkStyle}>
         📦 Produtos

@@ -108,6 +108,7 @@ builder.Services.AddScoped<
 
 var app = builder.Build();
 
+//Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

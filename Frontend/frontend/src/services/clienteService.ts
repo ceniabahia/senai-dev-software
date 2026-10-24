@@ -1,6 +1,5 @@
 import api from './api'
 import type { Cliente, NovoCliente } from '../types/Cliente'
-import { data } from 'react-router-dom'
 
 export const ClienteService = {
   listar: async (): Promise<Cliente[]> => {

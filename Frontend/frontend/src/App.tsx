@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage'
 import ProdutosPage from './pages/ProdutosPage'
 import ClientesPage from './pages/ClientesPage'
 import VendasPage from './pages/VendasPage'
-
+import DepartamentosPage from './pages/DepartamentosPage'
 function Layout() {
   const { isAuthenticated } = useAuth()
   return (
@@ -25,6 +25,7 @@ function Layout() {
           <Route path="/vendas" element={
             <ProtectedRoute><VendasPage /></ProtectedRoute>
           } />
+          <Route path="/departamentos" element={<DepartamentosPage />} />
         </Routes>
       </main>
     </div>

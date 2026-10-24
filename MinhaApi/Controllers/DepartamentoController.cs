@@ -64,14 +64,16 @@ public class DepartamentoController : ControllerBase
         return Ok(atualizado);
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int Id)
-    {
-        var deletado = _service.Delete(Id);
+   
+[HttpDelete("{id}")]
+public IActionResult Delete(int id)
+{
+    var deletado = _service.Delete(id);
 
-        if (!deletado)
-            return NotFound();
+    if (!deletado)
+        return NotFound();
 
-        return NoContent();
-    }
+    return NoContent();
+}
+
 }

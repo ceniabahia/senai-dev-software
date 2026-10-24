@@ -1,0 +1,236 @@
+.depto-titulo {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+.depto-subtitulo {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+}
+
+.depto-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .depto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Formulário ===== */
+.depto-form {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.depto-form-titulo {
+  font-size: 1.1rem;
+  margin: 0 0 16px;
+}
+
+.depto-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.depto-campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--soft);
+}
+
+.depto-campo input {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 13px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 5%, transparent);
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.depto-campo input::placeholder {
+  color: var(--soft);
+  opacity: 0.7;
+}
+
+.depto-campo input:focus {
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent);
+}
+
+.depto-acoes-form {
+  display: flex;
+  gap: 10px;
+}
+
+.depto-botao {
+  flex: 1;
+  padding: 12px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--acc);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.depto-botao:hover {
+  background: var(--acc2);
+}
+
+.depto-botao:active {
+  transform: scale(0.98);
+}
+
+.depto-botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.depto-botao-secundario {
+  padding: 12px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.depto-botao-secundario:hover {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.depto-botao:focus-visible,
+.depto-botao-secundario:focus-visible,
+.depto-editar:focus-visible {
+  outline: 3px solid var(--acc);
+  outline-offset: 2px;
+}
+
+.depto-erro {
+  background: color-mix(in srgb, #f97066 18%, transparent);
+  color: #f97066;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin: 0 0 14px;
+}
+
+/* ===== Lista ===== */
+.depto-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.depto-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 20px;
+}
+
+.depto-item + .depto-item {
+  border-top: 1px solid var(--line);
+}
+
+.depto-item-editando {
+  background: color-mix(in srgb, var(--acc) 10%, transparent);
+  box-shadow: inset 3px 0 0 var(--acc);
+}
+
+.depto-inicial {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--acc) 18%, transparent);
+  color: var(--acc2);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  flex: none;
+}
+
+.depto-nome {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.depto-acoes {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.depto-editar,
+.depto-excluir {
+  padding: 7px 14px;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.depto-editar {
+  border: 1.5px solid color-mix(in srgb, var(--acc) 55%, transparent);
+  color: var(--acc);
+}
+
+.depto-editar:hover {
+  background: var(--acc);
+  color: #fff;
+}
+
+.depto-excluir {
+  border: 1.5px solid color-mix(in srgb, #f97066 50%, transparent);
+  color: #f97066;
+}
+
+.depto-excluir:hover {
+  background: #f97066;
+  color: #fff;
+}
+
+.depto-excluir:focus-visible {
+  outline: 3px solid #f97066;
+  outline-offset: 2px;
+}
+
+.depto-vazio {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--soft);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin: 0;
+}

@@ -29,7 +29,19 @@ function DepartamentoList({ departamentos, loading, editandoId, onEditar, onExcl
           className={`depto-item ${editandoId === d.id ? 'depto-item-editando' : ''}`}
         >
           <span className="depto-inicial">{d.nome.charAt(0).toUpperCase()}</span>
-          <span className="depto-nome">{d.nome}</span>
+
+          <div className="depto-info">
+            <span className="depto-nome">{d.nome}</span>
+            <span className="depto-detalhe">
+              {d.funcionario}
+              {d.email && ` • ${d.email}`}
+              {d.telefone && ` • ${d.telefone}`}
+            </span>
+          </div>
+
+          <span className={`depto-status ${d.ativo ? 'depto-ativo' : 'depto-inativo'}`}>
+            {d.ativo ? 'Ativo' : 'Inativo'}
+          </span>
 
           <div className="depto-acoes">
             <button

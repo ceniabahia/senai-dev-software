@@ -13,7 +13,7 @@ export const departamentoService = {
     return data
   },
 
-  atualizar: async (_id: number, d: Departamento): Promise<Departamento> => {
+  atualizar: async (d: Departamento): Promise<Departamento> => {
     const { data } = await api.put(`/departamento/${d.id}`, d)
     return data
   },
@@ -23,5 +23,4 @@ export const departamentoService = {
   }
 }
 
-// Mantém o nome com maiúscula, para quem ainda importar assim
 export const DepartamentoService = departamentoService

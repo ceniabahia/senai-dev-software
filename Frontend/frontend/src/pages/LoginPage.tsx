@@ -66,6 +66,12 @@ function LoginPage() {
       <button className="login-botao" type="submit" disabled={loading}>
         {loading ? 'Entrando...' : 'Entrar'}
       </button>
+
+      // antes: navigate('/produtos')
+navigate('/dashboard')
+
+// antes: <Navigate to="/produtos" replace />
+if (isAuthenticated) return <Navigate to="/dashboard" replace />
     </form>
   </div>
 )

@@ -7,6 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +47,7 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IDepartamentoRepository,
     DepartamentoRepository>();
+    builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 
 // Registra os serviços existentes
 builder.Services.AddScoped<
@@ -65,6 +69,8 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IDepartamentoService,
     DepartamentoService>();
+
+    builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 // Configuração do JWT
 var jwtKey = builder.Configuration["Jwt:Key"]
@@ -125,3 +131,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

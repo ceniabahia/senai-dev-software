@@ -39,8 +39,7 @@ function Sidebar() {
       <NavLink to="/dashboard" style={getLinkStyle}>
   📊 Dashboard
 </NavLink>
-<NavLink to="/produtos" style={getLinkStyle}>📦 Produtos</NavLink>
-<NavLink to="/clientes" style={getLinkStyle}>👤 Clientes</NavLink>
+
 {/* ...demais links (Vendas) */}
 
       <NavLink to="/produtos" style={getLinkStyle}>

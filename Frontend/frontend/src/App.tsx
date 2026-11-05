@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Sidebar from './components/Sidebar'
@@ -8,31 +9,67 @@ import ClientesPage from './pages/ClientesPage'
 import VendasPage from './pages/VendasPage'
 import DepartamentosPage from './pages/DepartamentosPage'
 import DashboardPage from './pages/DashboardPage'
+
 function Layout() {
   const { isAuthenticated } = useAuth()
+
   return (
     <div style={{ display: 'flex' }}>
       {isAuthenticated && <Sidebar />}
+
       <main style={{ flex: 1, padding: '24px' }}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Navigate to="/produtos" replace />} />
-          <Route path="/produtos" element={
-            <ProtectedRoute><ProdutosPage /></ProtectedRoute>
-          } />
-          <Route path="/clientes" element={
-            <ProtectedRoute><ClientesPage /></ProtectedRoute>
-          } />
-          <Route path="/vendas" element={
-            <ProtectedRoute><VendasPage /></ProtectedRoute>
-          } />
-          <Route path="/departamentos" element={<DepartamentosPage />} />
-        </Routes>
-<Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-<Route path="/dashboard" element={
-  <ProtectedRoute><DashboardPage /></ProtectedRoute>
-} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/produtos"
+            element={
+              <ProtectedRoute>
+                <ProdutosPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/clientes"
+            element={
+              <ProtectedRoute>
+                <ClientesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/vendas"
+            element={
+              <ProtectedRoute>
+                <VendasPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/departamentos"
+            element={
+              <ProtectedRoute>
+                <DepartamentosPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
       </main>
     </div>
   )
@@ -47,4 +84,5 @@ function App() {
     </BrowserRouter>
   )
 }
+
 export default App

@@ -16,5 +16,7 @@ namespace MinhaApi.Repositories
         void Delete(int id);
 
         void AtualizarEstoque(int id, int estoque);
+        // Adicionar ao final da interface existente:
+void AtualizarFoto(int id, string? nomeArquivo);
     }
 }

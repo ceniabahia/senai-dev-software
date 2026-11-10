@@ -132,3 +132,13 @@ app.MapControllers();
 
 app.Run();
 
+// ✅ CORRETO: UseCors ANTES de UseStaticFiles
+app.UseCors("AllowAll");        // ← já existia
+app.UseStaticFiles();           // ← NOVO — libera wwwroot
+app.UseAuthentication();        // ← já existia
+app.UseAuthorization();         // ← já existia
+
+await api.post('/produtos', {
+  nome: 'Notebook',
+  preco: 2500
+})

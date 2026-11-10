@@ -1,9 +1,9 @@
+
 namespace MinhaApi.Models;
 
 public class Produto
 {
     internal object? email;
-
 
     public int Id { get; set; }
 
@@ -16,4 +16,6 @@ public class Produto
 
     public bool Ativo { get; set; }
         = true;
+
+    public string? Foto { get; set; }
 }

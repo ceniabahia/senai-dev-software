@@ -17,7 +17,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos";
+        string sql = "SELECT id, nome, preco, estoque, ativo, foto FROM produtos";
 
         using var cmd = new MySqlCommand(sql, conn);
         using var reader = cmd.ExecuteReader();
@@ -30,7 +30,10 @@ public class ProdutoRepository : IProdutoRepository
                 Nome = reader.GetString("nome"),
                 Preco = reader.GetDecimal("preco"),
                 Estoque = reader.GetInt32("estoque"),
-                Ativo = reader.GetBoolean("ativo")
+                Ativo = reader.GetBoolean("ativo"),
+                Foto = reader.IsDBNull(reader.GetOrdinal("foto"))
+                    ? null
+                    : reader.GetString("foto")
             });
         }
 
@@ -42,7 +45,7 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = "SELECT id, nome, preco, estoque, ativo FROM produtos WHERE id = @Id";
+        string sql = "SELECT id, nome, preco, estoque, ativo, foto FROM produtos WHERE id = @Id";
 
         using var cmd = new MySqlCommand(sql, conn);
         cmd.Parameters.AddWithValue("@Id", id);
@@ -58,7 +61,10 @@ public class ProdutoRepository : IProdutoRepository
             Nome = reader.GetString("nome"),
             Preco = reader.GetDecimal("preco"),
             Estoque = reader.GetInt32("estoque"),
-            Ativo = reader.GetBoolean("ativo")
+            Ativo = reader.GetBoolean("ativo"),
+            Foto = reader.IsDBNull(reader.GetOrdinal("foto"))
+                ? null
+                : reader.GetString("foto")
         };
     }
 
@@ -102,8 +108,10 @@ public class ProdutoRepository : IProdutoRepository
         using var conn = new MySqlConnection(_connectionString);
         conn.Open();
 
-        string sql = @"INSERT INTO produtos (nome, preco, estoque, ativo)
-                       VALUES (@Nome, @Preco, @Estoque, @Ativo);
+        string sql = @"INSERT INTO produtos
+                       (nome, preco, estoque, ativo, foto)
+                       VALUES
+                       (@Nome, @Preco, @Estoque, @Ativo, @Foto);
                        SELECT LAST_INSERT_ID();";
 
         using var cmd = new MySqlCommand(sql, conn);
@@ -111,6 +119,7 @@ public class ProdutoRepository : IProdutoRepository
         cmd.Parameters.AddWithValue("@Preco", p.Preco);
         cmd.Parameters.AddWithValue("@Estoque", p.Estoque);
         cmd.Parameters.AddWithValue("@Ativo", p.Ativo);
+        cmd.Parameters.AddWithValue("@Foto", (object?)p.Foto ?? DBNull.Value);
 
         var idGerado = cmd.ExecuteScalar();
         p.Id = Convert.ToInt32(idGerado);
@@ -126,6 +135,23 @@ public class ProdutoRepository : IProdutoRepository
         using var cmd = new MySqlCommand(sql, conn);
         cmd.Parameters.AddWithValue("@Id", id);
         cmd.Parameters.AddWithValue("@Estoque", estoque);
+
+        cmd.ExecuteNonQuery();
+    }
+
+    public void AtualizarFoto(int id, string? nomeArquivo)
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        conn.Open();
+
+        string sql = "UPDATE produtos SET foto = @Foto WHERE id = @Id";
+
+        using var cmd = new MySqlCommand(sql, conn);
+
+        cmd.Parameters.AddWithValue("@Foto",
+            (object?)nomeArquivo ?? DBNull.Value);
+
+        cmd.Parameters.AddWithValue("@Id", id);
 
         cmd.ExecuteNonQuery();
     }

@@ -71,7 +71,8 @@ builder.Services.AddScoped<
     DepartamentoService>();
 
     builder.Services.AddScoped<IDashboardService, DashboardService>();
-
+builder.Services.AddScoped<IFotoService, FotoService>();  // ✨
+// IProdutoRepository e IProdutoService já existiam
 // Configuração do JWT
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException(

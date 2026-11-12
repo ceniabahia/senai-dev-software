@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from 'react'
 import type { Produto } from '../types/Produto'
 import { produtoService } from '../services/ProdutoService'
+import FotoUpload from '../components/produtos/FotoUpload'
 
 interface Props {
   onSalvo: () => void
@@ -14,26 +16,42 @@ function ProdutoForm({ onSalvo, produtoEdicao, onCancelar }: Props) {
   const [estoque, setEstoque] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
+  const [fotoBase64Atual, setFotoBase64Atual] = useState<string | null>(null)
 
   const editando = !!produtoEdicao
 
-  // Preenche o formulário ao clicar em "Editar" (e limpa ao cancelar)
+  async function carregarProduto() {
+    if (!produtoEdicao?.id) return
+
+    try {
+      const produto = await produtoService.buscarPorId(produtoEdicao.id)
+
+      setNome(produto.nome)
+      setPreco(String(produto.preco))
+      setEstoque(String(produto.estoque))
+      setFotoBase64Atual(produto.fotoBase64 ?? null)
+    } catch {
+      setErro('Erro ao carregar os dados do produto.')
+    }
+  }
+
   useEffect(() => {
     setErro(null)
+
     if (produtoEdicao) {
-      setNome(produtoEdicao.nome)
-      setPreco(String(produtoEdicao.preco))
-      setEstoque(String(produtoEdicao.estoque))
+      carregarProduto()
     } else {
       setNome('')
       setPreco('')
       setEstoque('')
+      setFotoBase64Atual(null)
     }
   }, [produtoEdicao])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setErro(null)
+
     try {
       setLoading(true)
 
@@ -51,9 +69,11 @@ function ProdutoForm({ onSalvo, produtoEdicao, onCancelar }: Props) {
           estoque: Number(estoque),
           ativo: true
         })
+
         setNome('')
         setPreco('')
         setEstoque('')
+        setFotoBase64Atual(null)
       }
 
       onSalvo()
@@ -117,7 +137,6 @@ function ProdutoForm({ onSalvo, produtoEdicao, onCancelar }: Props) {
           />
         </div>
       </div>
-
       <div className="form-acoes">
         <button className="botao" type="submit" disabled={loading}>
           {loading
@@ -138,6 +157,14 @@ function ProdutoForm({ onSalvo, produtoEdicao, onCancelar }: Props) {
           </button>
         )}
       </div>
+
+      {editando && produtoEdicao && (
+        <FotoUpload
+          produtoId={produtoEdicao.id}
+          fotoBase64Atual={fotoBase64Atual}
+          onAtualizar={carregarProduto}
+        />
+      )}
     </form>
   )
 }

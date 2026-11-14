@@ -18,4 +18,6 @@ public class Produto
         = true;
 
     public string? Foto { get; set; }
+    public string? FotoBase64 { get; internal set; }
+
 }

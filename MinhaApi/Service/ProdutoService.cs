@@ -1,159 +1,182 @@
 
 using MinhaApi.Models;
 using MinhaApi.Repositories;
-using MinhaApi.Services;
-public class ProdutoService : IProdutoService
+using Microsoft.AspNetCore.Http;
+
+namespace MinhaApi.Services
 {
-    private readonly IProdutoRepository _repo;
-    private readonly IFotoService _fotoService; // ✨ novo
-
-    public ProdutoService(
-        IProdutoRepository repo,
-        IFotoService fotoService) // DI injeta automaticamente
+    public class ProdutoService : IProdutoService
     {
-        _repo        = repo;
-        _fotoService = fotoService;
+        private readonly IProdutoRepository _repo;
+        private readonly IFotoService _fotoService;
+
+        public ProdutoService(
+            IProdutoRepository repo,
+            IFotoService fotoService)
+        {
+            _repo = repo;
+            _fotoService = fotoService;
+        }
+
+        // LISTAR TODOS OS PRODUTOS
+        public IEnumerable<Produto> GetAll()
+        {
+            var produtos = _repo.GetAll();
+
+            foreach (var produto in produtos)
+            {
+                produto.FotoBase64 =
+                    _fotoService.LerBase64(produto.Foto);
+            }
+
+            return produtos;
+        }
+
+        // BUSCAR PRODUTO POR ID
+        public Produto? GetById(int id)
+        {
+            var produto = _repo.GetById(id);
+
+            if (produto == null)
+                return null;
+
+            produto.FotoBase64 =
+                _fotoService.LerBase64(produto.Foto);
+
+            return produto;
+        }
+
+        // CRIAR PRODUTO
+        public Produto Create(Produto produto)
+        {
+            if (produto.Preco < 0)
+                throw new ArgumentException("Preço inválido.");
+
+            _repo.Add(produto);
+
+            return produto;
+        }
+
+        // ATUALIZAR PRODUTO
+        public Produto? Update(int id, Produto p)
+        {
+            var produtoExistente = _repo.GetById(id);
+
+            if (produtoExistente == null)
+                return null;
+
+            if (p.Preco < 0)
+                throw new ArgumentException("Preço inválido.");
+
+            p.Id = id;
+
+            // Preserva a foto existente.
+            p.Foto = produtoExistente.Foto;
+
+            _repo.Update(p);
+
+            return p;
+        }
+
+        // EXCLUIR PRODUTO
+        public bool Delete(int id)
+        {
+            var produto = _repo.GetById(id);
+
+            if (produto == null)
+                return false;
+
+            var fotoAntiga = produto.Foto;
+
+            // Primeiro exclui o produto do banco.
+            _repo.Delete(id);
+
+            // Depois exclui a foto física.
+            if (!string.IsNullOrEmpty(fotoAntiga))
+            {
+                _fotoService.Deletar(fotoAntiga);
+            }
+
+            return true;
+        }
+
+        // SALVAR OU SUBSTITUIR FOTO DO PRODUTO
+        public async Task<string> SalvarFoto(
+            int id,
+            IFormFile arquivo)
+        {
+            if (arquivo == null || arquivo.Length == 0)
+            {
+                throw new ArgumentException(
+                    "Nenhum arquivo enviado.");
+            }
+
+            var produto = _repo.GetById(id);
+
+            if (produto == null)
+            {
+                throw new KeyNotFoundException(
+                    "Produto não encontrado.");
+            }
+
+            var fotoAntiga = produto.Foto;
+
+            // Salva a nova imagem.
+            var nomeArquivo =
+                await _fotoService.SalvarAsync(arquivo);
+
+            try
+            {
+                // Atualiza o banco com o nome da nova foto.
+                _repo.AtualizarFoto(id, nomeArquivo);
+            }
+            catch
+            {
+                // Remove a nova imagem se o banco falhar.
+                _fotoService.Deletar(nomeArquivo);
+                throw;
+            }
+
+            // Remove a foto anterior após atualizar o banco.
+            if (!string.IsNullOrEmpty(fotoAntiga))
+            {
+                _fotoService.Deletar(fotoAntiga);
+            }
+
+            // Retorna a imagem em Base64.
+            var fotoBase64 =
+                _fotoService.LerBase64(nomeArquivo);
+
+            if (fotoBase64 == null)
+            {
+                throw new InvalidOperationException(
+                    "Não foi possível carregar a foto.");
+            }
+
+            return fotoBase64;
+        }
+
+        // REMOVER FOTO DO PRODUTO
+        public void RemoverFoto(int id)
+        {
+            var produto = _repo.GetById(id);
+
+            if (produto == null)
+            {
+                throw new KeyNotFoundException(
+                    "Produto não encontrado.");
+            }
+
+            if (string.IsNullOrEmpty(produto.Foto))
+                return;
+
+            var fotoAntiga = produto.Foto;
+
+            // Primeiro remove a referência no banco.
+            _repo.AtualizarFoto(id, null);
+
+            // Depois remove o arquivo físico.
+            _fotoService.Deletar(fotoAntiga);
+        }
     }
-
-    public Produto? GetById(int id)
-        => _repo.GetById(id);
-
-    public Produto Create(Produto produto)
-    {
-        if (produto.Preco < 0)
-            throw new ArgumentException("Preço inválido");
-
-        _repo.Add(produto);
-        return produto;
-    }
-
-    public Produto? Update(int id, Produto p)
-    {
-        if (_repo.GetById(id) == null)
-            return null;
-
-        p.Id = id;
-        _repo.Update(p);
-        return p;
-    }
-
-  
-public bool Delete(int id)
-{
-    var produto = _repo.GetById(id);
-
-    if (produto == null)
-        return false;
-
-    _repo.Delete(id);
-
-    return true;
-}
- // No método ObterTodos() existente, ADICIONAR ao final:
-    public List<ProdutoDto> ObterTodos()
-    {
-        var produtos = _repo.ObterTodos();
-
-        // ✨ Para cada produto, calcular o base64 da foto
-        foreach (var p in produtos)
-            p.FotoBase64 = _fotoService.LerBase64(p.Foto);
-
-        return produtos;
-    }
-
-    // No método ObterPorId() existente, ADICIONAR antes do return:
-    public ProdutoDto? ObterPorId(int id)
-    {
-        var produto = _repo.ObterPorId(id);
-        if (produto is null) return null;
-
-        // ✨ Enriquecer com base64 antes de retornar
-        produto.FotoBase64 = _fotoService.LerBase64(produto.Foto);
-        return produto;
-    }
-
-     // No método ObterTodos() existente, ADICIONAR ao final:
-    public List<ProdutoDto> ObterTodos()
-    {
-        var produtos = _repo.ObterTodos();
-
-        // ✨ Para cada produto, calcular o base64 da foto
-        foreach (var p in produtos)
-            p.FotoBase64 = _fotoService.LerBase64(p.Foto);
-
-        return produtos;
-    }
-
-    // No método ObterPorId() existente, ADICIONAR antes do return:
-    public ProdutoDto? ObterPorId(int id)
-    {
-        var produto = _repo.ObterPorId(id);
-        if (produto is null) return null;
-
-        // ✨ Enriquecer com base64 antes de retornar
-        produto.FotoBase64 = _fotoService.LerBase64(produto.Foto);
-        return produto;
-    }
-  public async Task<string> SalvarFoto(int id, IFormFile arquivo)
-    {
-        var produto = _repo.ObterPorId(id)
-            ?? throw new KeyNotFoundException(
-                   "Produto não encontrado.");
-
-        // Se já tem foto, apaga a antiga do disco
-        if (!string.IsNullOrEmpty(produto.Foto))
-            _fotoService.Deletar(produto.Foto);
-
-        var nome = await _fotoService.SalvarAsync(arquivo);
-        _repo.AtualizarFoto(id, nome);
-
-        // Retorna a data URL — controller manda direto ao React
-        return _fotoService.LerBase64(nome)!;
-    }
-
-    public void RemoverFoto(int id)
-    {
-        var produto = _repo.ObterPorId(id)
-            ?? throw new KeyNotFoundException(
-                   "Produto não encontrado.");
-
-        if (string.IsNullOrEmpty(produto.Foto)) return;
-
-        _fotoService.Deletar(produto.Foto);
-        _repo.AtualizarFoto(id, null);
-        // O construtor já injeta IProdutoService — não muda
-// Apenas adicionar os dois métodos abaixo na classe:
-
-[HttpPost("{id}/foto")]
-public async Task<IActionResult> UploadFoto(
-    int id, IFormFile arquivo)
-{
-    if (arquivo == null || arquivo.Length == 0)
-        return BadRequest(new { message = "Nenhum arquivo enviado." });
-
-    try
-    {
-        var fotoBase64 = await _service.SalvarFoto(id, arquivo);
-        // Retorna a data URL pronta para o React usar no <img src>
-        return Ok(new { fotoBase64 });
-    }
-    catch (KeyNotFoundException ex)
-        { return NotFound(new { message = ex.Message }); }
-    catch (ArgumentException ex)
-        { return BadRequest(new { message = ex.Message }); }
-}
-
-[HttpDelete("{id}/foto")]
-public IActionResult RemoverFoto(int id)
-{
-    try
-    {
-        _service.RemoverFoto(id);
-        return NoContent(); // 204 — sem corpo
-    }
-    catch (KeyNotFoundException ex)
-        { return NotFound(new { message = ex.Message }); }
-}
-    }
-
 }

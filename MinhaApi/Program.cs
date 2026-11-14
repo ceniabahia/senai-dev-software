@@ -7,13 +7,12 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Gera um hash BCrypt para a senha 123456.
+// Execute apenas quando precisar gerar um novo hash.
 Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
 
-
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
 // Configuração do CORS
@@ -27,52 +26,25 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Registra os repositórios existentes
-builder.Services.AddScoped<
-    IProdutoRepository,
-    ProdutoRepository>();
+// Repositórios
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IVendasRepository, VendasRepository>();
+builder.Services.AddScoped<IFornecedorRepository, FornecedorRepository>();
+builder.Services.AddScoped<IDepartamentoRepository, DepartamentoRepository>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-builder.Services.AddScoped<
-    IClienteRepository,
-    ClienteRepository>();
+// Serviços
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IVendasService, VendasService>();
+builder.Services.AddScoped<IFornecedorService, FornecedorService>();
+builder.Services.AddScoped<IDepartamentoService, DepartamentoService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IFotoService, FotoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddScoped<
-    IVendasRepository,
-    VendasRepository>();
-
-builder.Services.AddScoped<
-    IFornecedorRepository,
-    FornecedorRepository>();
-
-builder.Services.AddScoped<
-    IDepartamentoRepository,
-    DepartamentoRepository>();
-    builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
-
-// Registra os serviços existentes
-builder.Services.AddScoped<
-    IProdutoService,
-    ProdutoService>();
-
-builder.Services.AddScoped<
-    IClienteService,
-    ClienteService>();
-
-builder.Services.AddScoped<
-    IVendasService,
-    VendasService>();
-
-builder.Services.AddScoped<
-    IFornecedorService,
-    FornecedorService>();
-
-builder.Services.AddScoped<
-    IDepartamentoService,
-    DepartamentoService>();
-
-    builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IFotoService, FotoService>();  // ✨
-// IProdutoRepository e IProdutoService já existiam
 // Configuração do JWT
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException(
@@ -82,40 +54,29 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {
-        opt.TokenValidationParameters =
-            new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
 
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey)),
 
-                ValidateIssuer = true,
-                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
 
-                ValidateAudience = true,
-                ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
 
-                ValidateLifetime = true
-            };
+            ValidateLifetime = true
+        };
     });
 
-// Habilita a autorização
+// Autorização
 builder.Services.AddAuthorization();
-
-// Injeção de dependência da autenticação
-// Adicione estas duas linhas somente se as classes e interfaces existirem.
-builder.Services.AddScoped<
-    IUsuarioRepository,
-    UsuarioRepository>();
-
-builder.Services.AddScoped<
-    IAuthService,
-    AuthService>();
 
 var app = builder.Build();
 
-//Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("123456"));
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -123,23 +84,16 @@ if (app.Environment.IsDevelopment())
 }
 
 // Pipeline da aplicação
+app.UseHttpsRedirection();
+
 app.UseCors("FrontendPolicy");
 
-app.UseAuthentication();
+// Libera o acesso aos arquivos da pasta wwwroot
+app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-// ✅ CORRETO: UseCors ANTES de UseStaticFiles
-app.UseCors("AllowAll");        // ← já existia
-app.UseStaticFiles();           // ← NOVO — libera wwwroot
-app.UseAuthentication();        // ← já existia
-app.UseAuthorization();         // ← já existia
-
-await api.post('/produtos', {
-  nome: 'Notebook',
-  preco: 2500
-})

@@ -33,7 +33,7 @@ export const produtoService = {
     formData.append('arquivo', arquivo)
 
     const { data } = await api.post(
-      `/produtos/${id}/foto`,
+      `/produto/${id}/foto`,
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } }
     )
@@ -42,7 +42,7 @@ export const produtoService = {
   },
 
   removerFoto: async (id: number): Promise<void> => {
-    await api.delete(`/produtos/${id}/foto`)
+    await api.delete(`/produto/${id}/foto`)
   }
 
 }

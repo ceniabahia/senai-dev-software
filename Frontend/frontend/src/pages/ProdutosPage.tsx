@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Produto } from '../types/Produto'
-import { produtoService } from '../services/ProdutoService'
+import { produtoService } from '../services/produtoService'
 import ProdutoForm from '../components/ProdutoForm'
 import ProdutoList from '../components/ProdutoList'
 import '../assets/css/Produto.css'
